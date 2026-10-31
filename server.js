@@ -98,5 +98,57 @@ app.get("/api/leaderboard",auth,(req,res)=>{
   const rows=db.prepare("SELECT first_name,username,coins FROM players ORDER BY coins DESC LIMIT 20").all();
   res.json(rows.map((p,i)=>({rank:i+1,name:p.username?("@"+p.username):p.first_name,coins:p.coins})));
 });
-const port=process.env.PORT||3000;
+async function startTelegramBot() {
+  if (!BOT_TOKEN) return;
+
+  let offset = 0;
+
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/deleteWebhook`);
+
+  while (true) {
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${offset}&timeout=30`
+      );
+
+      const data = await response.json();
+
+      if (data.ok) {
+        for (const update of data.result) {
+          offset = update.update_id + 1;
+
+          const msg = update.message;
+          if (!msg || !msg.text) continue;
+
+          if (msg.text.startsWith("/start")) {
+            await fetch(
+              `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+              {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                  chat_id: msg.chat.id,
+                  text: "👋 Добро пожаловать в Coin Tap!\n\n🎮 Нажми Играть и начинай зарабатывать монеты!",
+                  reply_markup: {
+                    inline_keyboard: [[
+                      {
+                        text: "🎮 Играть",
+                        url: "https://coin-tap.onrender.com/"
+                      }
+                    ]]
+                  }
+                })
+              }
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.log("Telegram error:", error.message);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+  }
+}
+
+startTelegramBot();const port=process.env.PORT||3000;
 app.listen(port,"0.0.0.0",()=>console.log(`Coin Tap running on ${port}`));
