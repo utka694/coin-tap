@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090909">
+<title>Coin Tap</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><span class="brand-icon">◆</span> COIN <b>TAP</b></div><div class="tag">LAVA EDITION</div></header>
+<section class="balance"><small>ТВОЙ БАЛАНС</small><div><strong id="coins">0</strong><span> COIN</span></div></section>
+<section class="coin-area">
+<div class="lightning l1">ϟ</div><div class="lightning l2">ϟ</div>
+<button id="tap" aria-label="Tap coin"><div class="coin"><div class="coin-core"><span>C</span><small>COIN</small></div></div></button>
+<p class="tap-hint">НАЖИМАЙ, ЧТОБЫ ЗАРАБАТЫВАТЬ</p>
+</section>
+<section class="energy">
+<div class="energy-label"><span>⚡ ЭНЕРГИЯ</span><b><span id="energy">500</span> / <span id="maxEnergy">500</span></b></div>
+<div class="bar"><i id="energyBar"></i></div>
+<small>Восстановление: 1 энергия / 5 секунд</small>
+</section>
+<nav><button class="tab active" data-tab="home">⛏ Тапать</button><button class="tab" data-tab="shop">⚡ Улучшения</button><button class="tab" data-tab="top">🏆 Топ</button></nav>
+<section id="shop" class="panel hidden">
+<h2>УЛУЧШЕНИЯ</h2>
+<article><div><b>⚡ Максимальная энергия</b><small>+250 к запасу энергии</small><small id="energyCost">Цена: 100 COIN</small></div><button id="buyEnergy">Купить</button></article>
+<article><div><b>🔥 Сила тапа</b><small id="tapDescription">Сейчас: +1 COIN за тап</small><small id="tapCost">Следующий уровень: 500 COIN</small></div><button id="buyTap">Улучшить</button></article>
+</section>
+<section id="top" class="panel hidden"><h2>ТОП ИГРОКОВ</h2><div id="leaders">Загрузка...</div></section>
+<div id="notice" role="status"></div>
+<footer>COIN TAP · ИГРОВЫЕ МОНЕТЫ НЕ ИМЕЮТ ДЕНЕЖНОЙ ЦЕННОСТИ</footer>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
